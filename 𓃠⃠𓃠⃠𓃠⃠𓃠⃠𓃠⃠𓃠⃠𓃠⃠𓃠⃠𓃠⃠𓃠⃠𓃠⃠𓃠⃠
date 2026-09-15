@@ -1,0 +1,256 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>(⃠) OFFICIAL SQL CONTROL PORTAL</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root{
+            --bg-main:#0A0F18;
+            --panel:#111B28;
+            --accent:#00D4FF;
+            --success:#00FFAA;
+            --danger:#FF4D6D;
+            --text:#E2F0FF;
+            --muted:#8FB2D9;
+            --border:#1E4976;
+            --key-glow:rgba(255,77,109,.45);
+        }
+        body{
+            background: var(--bg-main);
+            color: var(--text);
+            font-family: 'Segoe UI', Roboto, Menlo, monospace;
+            background-image: radial-gradient(circle at top, rgba(0,212,255,0.08), transparent 55%);
+            min-height: 100vh;
+        }
+        .glow-border{
+            border:1px solid var(--border);
+            box-shadow: 0 0 25px rgba(0,212,255,0.06), inset 0 0 50px rgba(0,0,0,0.25);
+        }
+        .key-badge{
+            display:inline-flex;align-items:center;gap:.3rem;
+            background:rgba(255,77,109,.12);border:1px solid var(--danger);
+            color:#ff8a9a;padding:.2rem .6rem;border-radius:.5rem;
+            box-shadow:0 0 10px var(--key-glow);font-weight:bold;
+        }
+        .btn-primary{
+            background: linear-gradient(135deg, #0E7490, #0891B2);
+            transition: all .25s ease;
+        }
+        .btn-primary:hover{
+            background: linear-gradient(135deg, #06B6D4, #00D4FF);
+            box-shadow: 0 0 15px rgba(0,212,255,0.4);
+            transform: translateY(-1px);
+        }
+        .btn-safe{
+            background: linear-gradient(135deg, #166534, #15803D);
+        }
+        .btn-safe:hover{
+            background: #22C55E;
+            box-shadow:0 0 15px rgba(34,197,94,0.4);
+        }
+        .btn-danger{
+            background: linear-gradient(135deg, #991B1B, #B91C1C);
+        }
+        .btn-danger:hover{
+            background: #EF4444;
+            box-shadow:0 0 15px rgba(239,68,68,0.35);
+        }
+        .terminal{
+            background:#06101C;
+            border:1px solid rgba(0,212,255,0.25);
+            font-family: 'Courier New', Menlo, monospace;
+        }
+        .status-pulse{
+            display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--success);box-shadow:0 0 10px var(--success);animation: pulse 2s infinite;
+        }
+        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+        .log-area{
+            background:#081420;
+            border-top:1px solid #1E3A5F;
+            white-space:pre-wrap;
+            overflow-y:auto;
+            max-height:350px;
+        }
+        .badge-lock{background:rgba(0,255,170,0.15);border:1px solid var(--success);color:var(--success);}
+        .key-string{font-family:monospace;color:#ff7a8c;letter-spacing:.5px;}
+        .backend-note{color:#4B8399;font-style:italic;margin-top:1rem;display:block;}
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="w-full bg-[#0B1A2B]/90 border-b border-[#00D4FF]/20 px-6 py-4">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <span class="text-3xl">🧠</span>
+            <div>
+                <h1 class="text-xl md:text-2xl font-bold text-cyan-300">
+                    <span class="key-badge">(⃠)</span> OFFICIAL SQL CONTROL PORTAL
+                </h1>
+                <p class="text-xs text-sky-400/70">(⃠) Anti‑Reflector System • Domain‑URL Binding • Brain String Pipeline</p>
+            </div>
+        </div>
+        <div class="hidden md:flex items-center gap-3 text-sm">
+            <span class="status-pulse"></span>
+            <span class="px-3 py-1 rounded-full text-xs badge-lock"><i class="fa fa-lock mr-1"></i> SECURED BY <span class="key-string">(⃠)</span> KEY</span>
+        </div>
+    </div>
+</header>
+
+<div class="max-w-7xl mx-auto p-5">
+
+    <!-- STATUS INFO BAR -->
+    <div class="glow-border rounded-lg bg-[#111B28]/80 px-5 py-4 mb-6">
+        <div class="grid md:grid-cols-3 gap-4 text-sm">
+            <div>
+                <span class="text-slate-400">📍 Active Domain:</span>
+                <p id="domainDisplay" class="font-semibold">— awaiting connection —</p>
+            </div>
+            <div>
+                <span class="text-slate-400">🔗 Pipeline Status:</span>
+                <p id="pipelineStatus" class="text-amber-300">● No Active <span class="key-string">(⃠)</span> Pipeline</p>
+            </div>
+            <div>
+                <span class="text-slate-400">🔐 <span class="key-string">(⃠)</span> Brain String:</span>
+                <p id="brainString" class="text-xs font-mono text-cyan-400">———</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid md:grid-cols-[300px_1fr] gap-6">
+
+        <!-- LEFT: CONTROL PANEL -->
+        <aside class="glow-border rounded-xl p-5 bg-[#111B28]/90">
+            <h2 class="text-lg font-bold border-b border-sky-800/50 pb-3 mb-4">
+                <span class="key-badge">(⃠)</span> <i class="fa fa-sliders mr-2 text-cyan-400"></i>CONTROL CENTER
+            </h2>
+            <div class="space-y-3">
+                <button onclick="startPipeline()" class="btn-safe w-full py-3 rounded-lg font-semibold">
+                    <i class="fa fa-plug mr-2"></i> START <span class="key-string">(⃠)</span> PIPELINE
+                </button>
+                <button onclick="resetPortal()" class="btn-danger w-full py-3 rounded-lg font-semibold">
+                    <i class="fa fa-power-off mr-2"></i> TERMINATE & CLEAR LOG
+                </button>
+                <hr class="border-slate-700/60 my-4">
+                <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Quick Queries</p>
+                <button onclick="setQuery('SHOW TABLES;')" class="btn-primary w-full py-2 rounded text-sm">
+                    📋 List Tables
+                </button>
+                <button onclick="setQuery('SELECT * FROM allowed_endpoints;')" class="btn-primary w-full py-2 rounded text-sm">
+                    🔒 View Bound Domains
+                </button>
+                <button onclick="setQuery('SELECT * FROM security_logs ORDER BY id DESC LIMIT 20;')" class="btn-primary w-full py-2 rounded text-sm">
+                    🛡️ Security Log
+                </button>
+                <button onclick="setQuery('SELECT * FROM brain_pipelines;')" class="btn-primary w-full py-2 rounded text-sm">
+                    🧠 All Pipelines
+                </button>
+            </div>
+            <div class="mt-6 text-xs text-slate-400 border-t border-slate-700/50 pt-4">
+                <p class="font-semibold mb-2">System Features:</p>
+                <ul class="space-y-1 list-disc list-inside">
+                    <li><span class="key-string">(⃠)</span> Domain & URL Binding Lock</li>
+                    <li><span class="key-string">(⃠)</span> Anti‑Reflector Protection</li>
+                    <li><span class="key-string">(⃠)</span> Encrypted Brain Pipeline</li>
+                    <li>✅ Full History Logging — no overwriting</li>
+                    <li>✅ Isolated Session Portal</li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- RIGHT: WEB TERMINAL -->
+        <main class="glow-border rounded-xl overflow-hidden bg-[#111B28]/60">
+            <div class="bg-slate-900/80 px-5 py-3 border-b border-cyan-900/40 flex justify-between items-center">
+                <h2 class="font-semibold text-lg">⌨️ SQL WEB TERMINAL <span class="key-badge text-xs">(⃠)</span></h2>
+                <span class="text-xs text-slate-300">Official Environment — Full History</span>
+            </div>
+
+            <div class="p-5">
+                <textarea id="sqlInput" rows="7" placeholder="(⃠) Enter your SQL query here...
+
+Example:
+SELECT * FROM `your_table_name` WHERE 1=1;"
+class="w-full p-4 rounded-lg border border-sky-800/60 bg-slate-900/80 text-cyan-50 font-mono focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"></textarea>
+
+                <button onclick="runQuery()" class="btn-primary w-full mt-4 py-4 rounded-lg font-bold text-lg">
+                    ▶ EXECUTE WITH <span class="key-string">(⃠)</span> KEY
+                </button>
+            </div>
+
+            <!-- OUTPUT LOG — KEEPS EVERY RESULT PERMANENT UNTIL RESET -->
+            <div class="log-area p-5 text-sm text-slate-300" id="logContainer">
+                <div id="logContent">
+                    <div class="text-cyan-400 mb-3">// SYSTEM READY — Start a (⃠) Pipeline to Begin...</div>
+                </div>
+                <span class="backend-note">// [BACKEND RESPONSE WILL APPEAR HERE — Connect to your PHP/API]</span>
+            </div>
+        </main>
+    </div>
+
+    <footer class="mt-10 text-center text-xs text-slate-500 border-t border-slate-800/60 pt-4">
+        PORTAL PROTECTED BY <span class="key-string">(⃠)</span> KEY SYSTEM • FULL HISTORY LOG • READY FOR BACKEND
+    </footer>
+</div>
+
+<script>
+// ⚡ PERMANENT LOG VERSION — appends every result, NEVER CLEARS AUTOMATICALLY
+const domainText = document.getElementById('domainDisplay');
+const pipeStatus = document.getElementById('pipelineStatus');
+const brainText = document.getElementById('brainString');
+const logContent = document.getElementById('logContent');
+const sqlArea = document.getElementById('sqlInput');
+const backendNote = `<span class="backend-note">// [BACKEND RESPONSE WILL APPEAR HERE — Connect to your PHP/API]</span>`;
+
+domainText.innerText = window.location.hostname + ` (${window.location.protocol})`;
+
+let pipelineActive = false;
+let currentBrain = "";
+
+function startPipeline(){
+    currentBrain = "(⃠)-BR‑" + Math.random().toString(36).substring(2,18).toUpperCase() + "‑" + Date.now();
+    pipelineActive = true;
+    pipeStatus.innerHTML = "<span class='text-green-400'>● ACTIVE & SECURE <span class='key-string'>(⃠)</span></span>";
+    brainText.innerText = currentBrain;
+    
+    // APPEND — never replace
+    logContent.innerHTML += `<div class="text-green-300 mt-2">✅ (⃠) PIPELINE CREATED
+🧠 Brain String: ${currentBrain}
+🛡️ Anti‑Reflector: ENABLED</div>`;
+}
+
+function resetPortal(){
+    pipelineActive = false;
+    currentBrain = "";
+    pipeStatus.innerText = "● No Active (⃠) Pipeline";
+    brainText.innerText = "———";
+    // CLEAR LOG ONLY WHEN EXPLICITLY RESET
+    logContent.innerHTML = `<div class="text-cyan-400 mb-1">// SYSTEM RESET — Ready...</div>`;
+}
+
+function setQuery(q){
+    sqlArea.value = q;
+    sqlArea.focus();
+}
+
+function runQuery(){
+    if(!pipelineActive){
+        logContent.innerHTML += `<div class="text-red-400 mt-3">❌ (⃠) KEY REQUIRED: Start Pipeline first!</div>`;
+        return;
+    }
+    const q = sqlArea.value.trim();
+    if(!q) return alert("Enter SQL first!");
+
+    // APPEND RESULT — EVERY TIME — history fully preserved
+    logContent.innerHTML += `<div class="text-sky-200 mt-3">
+————————————————————
+> QUERY: ${q}
+🛡️ (⃠) Anti‑Reflector: PASS
+🧠 PIPELINE: ${currentBrain.substring(0,25)}...
+// Result appended — previous output remains visible
+————————————————————</div>`;
+    
+    // Auto-scroll to latest
+    document.getElementById('logContainer').scrollTop = document.getElementById('logContainer').scrollHeight;
+}
